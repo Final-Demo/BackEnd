@@ -62,7 +62,7 @@ export const updateApartment = async (req, res, next) => {
         if (!apartment) {
             return res.status(404).json({ message: 'Apartment not found' })
         }
-        res.status(400).json({ message: "Property updated successfully", apartment })
+        res.status(200).json({ message: "Property updated successfully", apartment })
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
