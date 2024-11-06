@@ -15,7 +15,7 @@ apartmentRoute.get('/apartments/:id', getApartmentById);
 apartmentRoute.post('/apartments',upload.array('images',3),addApartment);
 
 // Update a property
-apartmentRoute.patch('/apartments/:id', updateApartment);
+apartmentRoute.patch('/apartments/:id',upload.array('images',3), updateApartment);
 
 // Approve property (Admin functionality)
 apartmentRoute.patch('/apartments/:id', approveProperty);

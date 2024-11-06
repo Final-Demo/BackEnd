@@ -50,8 +50,9 @@ export const addApartment = async (req, res, next) => {
 
 export const updateApartment = async (req, res, next) => {
     try {
+        const imageFilenames = req.files ? req.files.map(file => file.filename) : [];
         // input validation with joi
-        const { error, value } = updatePropertySchema.validate(req.body)
+        const { error, value } = updatePropertySchema.validate({ ...req.body, images:imageFilenames})
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
