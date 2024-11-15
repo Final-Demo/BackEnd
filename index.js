@@ -2,18 +2,23 @@ import express from 'express';
 import cors from 'cors';
 import mongoose  from 'mongoose';
 import apartmentRoute from './route/apartmentRoute.js';
+import authRoute from './route/authRoute.js';
+import userRoute from './route/userRoute.js';
 
 
 const app = express();
 
+app.use(express.json())
+app.use(cors())
+
 // Define a route handler for the default home page
 app.use(apartmentRoute)
+app.use(authRoute)
+app.use(userRoute)
 
 
 // App middleware for the server
-app.use(cors())
-app.use(express.json())
-const PORT = 3000;
+const PORT = 5000;
 
 
 const connectDB = async()=>{
