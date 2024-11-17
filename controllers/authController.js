@@ -1,10 +1,10 @@
 import { userModel } from "../model/userModel.js"
-import { loginvalidator, registervalidator, updatePasswordvalidator } from '../validator/user-validator.js'
+import { loginvalidator, registervalidator, resetPasswordvalidator, updatePasswordvalidator } from '../validator/user-validator.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 import { sendEmail } from "../utils/mail.js"
-import { Verification_Email_Template } from "../utils/email_templete.js"
+import { resetPasswordTemplate, Verification_Email_Template } from "../utils/email_templete.js"
 
 export const signupUser = async (req, res, next) => {
     try {
@@ -34,7 +34,7 @@ export const signupUser = async (req, res, next) => {
             from: process.env.SMTP_USER,
             to: value.email,
             subject: "Verify your email address",
-            html: Verification_Email_Template(value.firstName,verificationToken)
+            html: Verification_Email_Template(value.firstName, verificationToken)
         })
 
         console.log(newUser)
@@ -95,25 +95,52 @@ export const forgotPassword = async (req, res, next) => {
         // Update the user's reset password token and expiration date
         user.resetPasswordToken = resetPasswordToken;
         user.resetPasswordExpiration = resetPasswordExpiration;
-        const hello =await user.save();
-        console.log(hello)
+        await user.save();
 
         // Send an email to the user with a link to reset their password
         await sendEmail.sendMail({
             from: process.env.SMTP_USER,
             to: value.email,
             subject: "Reset your password",
-            html: `<p>Click <a href="http://localhost:3000/reset-password/${resetPasswordToken}">here</a> to reset your password.</p>`
+            html: resetPasswordTemplate(user.firstName, resetPasswordToken)
         });
         res.status(201).json('Please check your email to reset your password.')
     } catch (error) {
 
     }
 }
-export const resetPassword = (req, res, next) => {
+export const resetPassword = async (req, res, next) => {
     try {
-        res.status(201).json('User register successfully')
+        const token = req.params.token
+        const { error, value } = resetPasswordvalidator.validate(req.body);
+        if (error) {
+            return res.status(422).json(error)
+        }
+        const user = userModel.findOne({ resetPasswordToken: token, resetPasswordExpiration: { $gt: Date.now() } })
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+        const hashpassword = await bcrypt.hashSync(value.password, 10)
+
+        user.password = hashpassword
+        user.resetPasswordToken = null
+        user.resetPasswordExpiration = null
+        await user.save()
+
+        await sendEmail.sendMail({
+            from: process.env.SMTP_USER,
+            to: user.email,
+            subject: "Reset your password",
+            html: resetPasswordTemplate(user.firstName)
+        })
+
+        res.status(201).json('Password reset successful')
     } catch (error) {
 
     }
 }
+
+export const logout = async(req,res,next)=>{
+    res.cookieClear()
+}
+ 

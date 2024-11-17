@@ -4,8 +4,39 @@ import { propertySchema, updatePropertySchema } from "../validator/property-vali
 export const getApartment = async (req, res, next) => {
     try {
         // input validation with joi
-        const apartment = await apartmentModel.find()
-        res.status(200).json(apartment)
+        const {
+            title,
+            location,
+            sortBy = "price",
+            sortOrder = "asc",
+            page = 1,
+            limit = 15
+
+        } = req.query
+
+        const query = {}
+        if (title) query.title = title
+        if (location) query.location = location
+
+        const skip = (page - 1) * limit
+
+        const sort = { [sortBy]: sortOrder === "asc" ? 1 : 1 }
+
+
+
+        const [apartment,total] =await Promise.all([
+            apartmentModel.find(query)
+            .sort(sort)
+            .skip(skip)
+            .limit(parseInt(limit)),
+            apartmentModel.countDocuments(query)
+        ])
+        res.status(200).json({apartment,pagination:{
+            total,
+            page:parseInt(page),
+            pages:Math.ceil(total/limit)
+        }
+    })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -52,7 +83,7 @@ export const updateApartment = async (req, res, next) => {
     try {
         const imageFilenames = req.files ? req.files.map(file => file.filename) : [];
         // input validation with joi
-        const { error, value } = updatePropertySchema.validate({ ...req.body, images:imageFilenames})
+        const { error, value } = updatePropertySchema.validate({ ...req.body, images: imageFilenames })
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }

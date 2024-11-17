@@ -19,4 +19,9 @@ export const loginvalidator = Joi.object({
 export const updatePasswordvalidator = Joi.object({
     email:Joi.string().email().required().lowercase(),
 })
+
+export const resetPasswordvalidator = Joi.object({
+    password:Joi.string().required().min(8),
+    confirmPassword:Joi.string().valid(Joi.ref('password')).required()
+})
     
