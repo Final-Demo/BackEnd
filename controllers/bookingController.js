@@ -14,3 +14,26 @@ export const getBookings = async (req, res, next) => {
     }
 }
 
+export const getBooking = async (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+export const updateBooking = async (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+export const deleteBooking = async (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}

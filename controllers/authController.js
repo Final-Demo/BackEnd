@@ -116,10 +116,11 @@ export const resetPassword = async (req, res, next) => {
         if (error) {
             return res.status(422).json(error)
         }
-        const user = userModel.findOne({ resetPasswordToken: token, resetPasswordExpiration: { $gt: Date.now() } })
+        const user = await userModel.findOne({ resetPasswordToken: token, resetPasswordExpiration: { $gt: Date.now() } })
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }
+
         const hashpassword = await bcrypt.hashSync(value.password, 10)
 
         user.password = hashpassword
