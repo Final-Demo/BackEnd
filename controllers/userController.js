@@ -1,7 +1,7 @@
 import { userModel } from "../model/userModel.js";
 import { updatevalidator } from "../validator/user-validator.js";
 
-
+// verify email
 export const verifyEmail = async (req, res, next) => {
     try {
         const token = req.params.token
@@ -23,9 +23,10 @@ export const verifyEmail = async (req, res, next) => {
     }
 }
 
+// get user
 export const getUserProfile = async (req, res, next) => {
     try {
-        const user = await userModel.findById(req.user.id)
+        const user = await userModel.findById(req.auth.id)
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }
@@ -37,7 +38,7 @@ export const getUserProfile = async (req, res, next) => {
 }
 
 
-
+// update user
 export const updateUserProfile =  async (req, res, next) => {
     try {
         const { id } = req.params
@@ -56,7 +57,7 @@ export const updateUserProfile =  async (req, res, next) => {
 }
 
 
-
+// delete user
 export const deleteUserAccount = async (req, res, next) => {
     try {
         const { id } = req.params
@@ -66,6 +67,32 @@ export const deleteUserAccount = async (req, res, next) => {
         }
         res.status(200).json({ message: 'User deleted successfully' })
 
+    } catch (error) {
+        next(error)
+    }
+}
+
+// get user count
+export const getUsercount =(req,res,next)=>{
+    try {
+         // Get the count of all users in the database
+        const count = userModel.countDocuments()
+
+        // Send the count as the response
+        res.status(200).json(count)
+    } catch (error) {
+        next(error)
+   }
+}
+
+// get all users
+export const getAllUsers = async (req, res, next) => {
+    try {
+        const users = await userModel.find()
+        if (!users) {
+            return res.status(404).json({ message: 'Users not found' })
+        }
+        res.status(200).json(users)
     } catch (error) {
         next(error)
     }

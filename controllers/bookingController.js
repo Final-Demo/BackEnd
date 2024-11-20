@@ -61,7 +61,7 @@ export const updateBooking = async (req, res, next) => {
     try {
         const { id } = req.params;
         const {status} = req.body;
-        const bookingRequest = await bookingModel.findByIdAndUpdate(id);
+        const bookingRequest = await bookingModel.findByIdAndUpdate(id,{user:req.auth.id});
         if (!bookingRequest) {
             return res.status(404).json({ message: "Booking request not found" });
         }
@@ -82,6 +82,16 @@ export const updateBooking = async (req, res, next) => {
 
         res.status(200).json({ message: `Booking request ${status} successfully`,bookingRequest });
         
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const countBooking = async(req,res,next)=>{
+    try {
+        // 
+        const total =await bookingModel.countDocuments()
+        res.status(200).json(total)
     } catch (error) {
         next(error)
     }

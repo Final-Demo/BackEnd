@@ -1,0 +1,41 @@
+export const permissions=[
+    {
+        role:"user",
+        actions:[
+            "getApartment",
+            "getApartmentById",
+            "addFavourite",
+            "removeFavourite",
+            "getFavourite",
+            "getFavouriteById",
+            "createBooking",
+            "getBooking",
+            "getBookingById",
+            "cancelBooking",
+            "getMyBookings",
+            "getNotifications",
+        ]
+    },
+    {
+        role:"landlord",
+        actions:[
+            "getApartment",
+            "getApartmentById",
+            "addApartment",
+            "updateApartment",
+            "deleteApartment",
+        ]
+    },
+    {
+        role:"admin",
+        actions:[
+            "getApartment",
+            "getApartmentById",
+            "addApartment",
+            "updateApartment",
+            "deleteApartment",
+            "approveProperty",
+            
+        ]
+    }
+]

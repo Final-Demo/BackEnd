@@ -20,7 +20,7 @@ export const getApartment = async (req, res, next) => {
 
         const skip = (page - 1) * limit
 
-        const sort = { [sortBy]: sortOrder === "asc" ? 1 : 1 }
+        const sort = { [sortBy]: sortOrder === "asc" ? 1 : -1 }
 
 
 
@@ -39,6 +39,18 @@ export const getApartment = async (req, res, next) => {
     })
     } catch (error) {
         res.status(500).json({ error: error.message })
+    }
+}
+
+export const getMyApartment = async (req, res, next) => {
+    try {
+        const apartment = await apartmentModel.find({ user: req.auth.id })
+        if (!apartment) {
+            return res.status(404).json({ message: 'Apartment not found' })
+        }
+        res.status(200).json(apartment)
+    } catch (error) {
+        next(error)
     }
 }
 
@@ -92,7 +104,7 @@ export const updateApartment = async (req, res, next) => {
             return res.status(400).json({ error: error.details[0].message });
         }
         const { id } = req.params
-        const apartment = await apartmentModel.findByIdAndUpdate(id, value, { new: true })
+        const apartment = await apartmentModel.findByIdAndUpdate(id,{ user: req.auth.id }, value, { new: true })
         // check whather the apartment is there to be updated
         if (!apartment) {
             return res.status(404).json({ message: 'Apartment not found' })
@@ -107,7 +119,7 @@ export const deleteApartment = async (req, res, next) => {
     try {
         // input validation with joi
         const { id } = req.params
-        const property = await apartmentModel.findByIdAndDelete(id)
+        const property = await apartmentModel.findByIdAndDelete(id, { user: req.auth.id })
         // check if the id is valid to be deleted
         if (!property) {
             return res.status(404).json({ message: 'Property not found' })
@@ -118,6 +130,8 @@ export const deleteApartment = async (req, res, next) => {
         res.status(500).json({ error: error.message })
     }
 }
+
+
 
 // Approve property by the Admin
 export const approveProperty = async (req, res, next) => {
@@ -130,6 +144,15 @@ export const approveProperty = async (req, res, next) => {
             return res.status(404).json({ message: 'Property not found' })
         }
         res.status(200).json({ message: 'Property approved successfully', property })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+export const countApartment = async (req, res, next) => {
+    try {
+        const count = await apartmentModel.countDocuments()
+        res.status(200).json(count)
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
