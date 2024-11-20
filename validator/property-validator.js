@@ -5,7 +5,6 @@ export const propertySchema = Joi.object({
     description: Joi.string().min(10).max(500).required(),
     location: Joi.string().min(3).max(100).required(),
     price: Joi.number().positive().required(),
-    landlord: Joi.string().required(), // Assuming this is the ObjectId of the user
     category: Joi.string().valid('apartment','house','studio','shared room').required(),
     images: Joi.array().items(Joi.string()).min(1).required(), // Array of image URLs
     status: Joi.string().valid('available', 'not available').default('available'),

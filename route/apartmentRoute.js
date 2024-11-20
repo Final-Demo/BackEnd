@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { getApartment, getApartmentById, addApartment, updateApartment, deleteApartment, approveProperty } from "../controllers/apartmentController.js";
 import { upload } from "../middlewares/upload.js";
+import { isAuthenticated } from "../middlewares/auth.js";
 
 
 const apartmentRoute = Router();
@@ -12,7 +13,7 @@ apartmentRoute.get('/apartments', getApartment);
 apartmentRoute.get('/apartments/:id', getApartmentById);
 
 // Create a new property
-apartmentRoute.post('/apartments',upload.array('images',3),addApartment);
+apartmentRoute.post('/apartments',isAuthenticated,upload.array('images',3),addApartment);
 
 // Update a property
 apartmentRoute.patch('/apartments/:id',upload.array('images',3), updateApartment);

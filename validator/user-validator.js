@@ -1,4 +1,4 @@
-import e from "express";
+
 import Joi from "joi";
 
 export const registervalidator =Joi.object({
@@ -9,6 +9,12 @@ export const registervalidator =Joi.object({
     phoneNumber:Joi.string().required().pattern(/^[0-9]+$/).length(10),
     role:Joi.string().valid('user','landlord','admin').default('user')
     
+})
+
+export const updatevalidator = Joi.object({
+    firstName:Joi.string(),
+    lastName:Joi.string(),
+    phoneNumber:Joi.string().pattern(/^[0-9]+$/).length(10),
 })
 
 export const loginvalidator = Joi.object({

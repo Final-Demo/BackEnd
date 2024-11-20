@@ -48,7 +48,7 @@ export const getApartmentById = async (req, res, next) => {
     try {
         // input validation with joi
         const { id } = req.params
-        const apartment = await apartmentModel.findById(id);
+        const apartment = await apartmentModel.findById(id).populate('user','firstName lastName email phoneNumber');
         if (!apartment) {
             return res.status(404).json({ message: 'Apartment not found' })
         }
@@ -62,7 +62,6 @@ export const getApartmentById = async (req, res, next) => {
 export const addApartment = async (req, res, next) => {
     try {
         const imageFilenames = req.files ? req.files.map(file => file.filename) : []
-        console.log(imageFilenames)
 
         // input validation with joi
         const { error, value } = propertySchema.validate({ ...req.body, images: imageFilenames })
@@ -70,7 +69,12 @@ export const addApartment = async (req, res, next) => {
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        await apartmentModel.create(value)
+        const apartment = new apartmentModel({
+            ...value,
+            user: req.auth.id
+        })
+
+        await apartment.save()
 
         res.status(200).json({ message: 'Property created successfully' })
     } catch (error) {

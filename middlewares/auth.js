@@ -1,6 +1,5 @@
 import { expressjwt } from "express-jwt";
-import { userModel } from "../model/userModel";
-import e from "express";
+import { userModel } from "../model/userModel.js";
 
 export const isAuthenticated = expressjwt({
     secret: process.env.JWT_SECRET,

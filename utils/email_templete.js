@@ -274,6 +274,5 @@ export const resetsuccessTemplate = (firstName) => {
           </div>
         </div>
       </body>
-      </html>
-      `
+      </html>   `
 }

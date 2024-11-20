@@ -4,6 +4,9 @@ import mongoose  from 'mongoose';
 import apartmentRoute from './route/apartmentRoute.js';
 import authRoute from './route/authRoute.js';
 import userRoute from './route/userRoute.js';
+import bookingRoute from './route/bookingRoute.js';
+import notificationRoute from './route/notificationRoute.js';
+import favoriteRoute from './route/favouriteRoute.js';
 
 
 const app = express();
@@ -15,6 +18,9 @@ app.use(cors())
 app.use(apartmentRoute)
 app.use(authRoute)
 app.use(userRoute)
+app.use(bookingRoute)
+app.use(notificationRoute)
+app.use(favoriteRoute)
 
 
 // App middleware for the server

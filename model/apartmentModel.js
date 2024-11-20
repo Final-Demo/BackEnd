@@ -19,7 +19,7 @@ const apartmentSchema = new Schema({
         type:Number,
         required:true
     },
-    landlord:{
+    user:{
         type:Types.ObjectId,
         ref:'User',
         required:true
@@ -37,7 +37,6 @@ const apartmentSchema = new Schema({
         isFurnished:{type:Boolean,default:false},
         isParkingAvailable:{type:Boolean,default:false},
         isAirConditionerAvailable:{type:Boolean,default:false}
-        // add more features here
     },
     amenities:[{
         type:String

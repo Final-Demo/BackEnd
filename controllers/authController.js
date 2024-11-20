@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 import { sendEmail } from "../utils/mail.js"
-import { resetPasswordTemplate, Verification_Email_Template } from "../utils/email_templete.js"
+import { resetPasswordTemplate, resetsuccessTemplate, Verification_Email_Template } from "../utils/email_templete.js"
 
 export const signupUser = async (req, res, next) => {
     try {
@@ -27,9 +27,6 @@ export const signupUser = async (req, res, next) => {
             verificationToken: verificationToken,
             tokenExpiration: Date.now() + 30 * 60 * 1000
         })
-
-        //    const hello = await sendVerificationEmail(value.email,verificationToken)
-        //    console.log(hello)
         const hello = await sendEmail.sendMail({
             from: process.env.SMTP_USER,
             to: value.email,
@@ -37,7 +34,6 @@ export const signupUser = async (req, res, next) => {
             html: Verification_Email_Template(value.firstName, verificationToken)
         })
 
-        console.log(newUser)
         res.status(201).json('Registration successful. Please check your email to verify your account.')
 
     } catch (error) {
@@ -128,11 +124,11 @@ export const resetPassword = async (req, res, next) => {
         user.resetPasswordExpiration = null
         await user.save()
 
-        await sendEmail.sendMail({
+     await sendEmail.sendMail({
             from: process.env.SMTP_USER,
             to: user.email,
-            subject: "Reset your password",
-            html: resetPasswordTemplate(user.firstName)
+            subject: "Password reset successful",
+            html: resetsuccessTemplate(user.firstName)
         })
 
         res.status(201).json('Password reset successful')
@@ -144,4 +140,6 @@ export const resetPassword = async (req, res, next) => {
 export const logout = async(req,res,next)=>{
     res.cookieClear()
 }
+
+
  
