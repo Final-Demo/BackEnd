@@ -73,10 +73,10 @@ export const deleteUserAccount = async (req, res, next) => {
 }
 
 // get user count
-export const getUsercount =(req,res,next)=>{
+export const getUsercount = async(req,res,next)=>{
     try {
          // Get the count of all users in the database
-        const count = userModel.countDocuments()
+        const count = await userModel.countDocuments()
 
         // Send the count as the response
         res.status(200).json(count)
