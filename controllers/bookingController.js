@@ -20,9 +20,11 @@ export const createBooking = async (req, res, next) => {
             notes:value.notes
         });
         const admin = await userModel.findOne({role:"admin"});
-
+        if (!admin) {
+            return res.status(404).json({message:"Admin not found"});
+        }
         const notification = await notificationModel.create({
-            user:admin._id,
+            user:admin.id,
             type:"booking",
             message:`A new booking has been made by ${apartmentModel.title}`
         })
