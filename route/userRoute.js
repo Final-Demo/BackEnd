@@ -6,15 +6,15 @@ const userRoute = Router()
 
 userRoute.get('/verify-email/:token',verifyEmail)
 
+userRoute.get('/user/count',isAuthenticated, getUsercount)
+
 userRoute.get('/user',isAuthenticated, getUserProfile)
 
 userRoute.delete('/user',isAuthenticated,updateUserProfile )
 
 userRoute.patch('/user',isAuthenticated, deleteUserAccount )
 
-userRoute.get('/user',isAuthenticated, getUsercount)
-
-userRoute.get('/user',isAuthenticated, getAllUsers)
+userRoute.get('/user/all',isAuthenticated, getAllUsers)
 
 
 export default userRoute

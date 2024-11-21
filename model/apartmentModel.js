@@ -19,32 +19,24 @@ const apartmentSchema = new Schema({
         type:Number,
         required:true
     },
-    user:{
-        type:Types.ObjectId,
-        ref:'User',
+    category:{
+        type:String,
+        enum:['Apartment','House','Studio','Shared'],
         required:true
+    },
+    status:{
+        type:String,
+        enum:['Available','Unavailable'],
+        default:'Available'
     },
     images:[{
         type:String,
         required:true
     }],
-    category:{
-        type:String,
-        enum:['apartment','house','studio','shared'],
+    user:{
+        type:Types.ObjectId,
+        ref:'User',
         required:true
-    },
-    features:{
-        isFurnished:{type:Boolean,default:false},
-        isParkingAvailable:{type:Boolean,default:false},
-        isAirConditionerAvailable:{type:Boolean,default:false}
-    },
-    amenities:[{
-        type:String
-    }],
-    status:{
-        type:String,
-        enum:['available','not available'],
-        default:'available'
     },
     isApproved:{
         type:Boolean,
