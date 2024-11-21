@@ -6,13 +6,14 @@ const bookingRoute = Router()
 
 bookingRoute.post('/booking',isAuthenticated,createBooking)
 
+bookingRoute.get('/booking/count',countBooking)
+
 bookingRoute.get('/booking',getBookings)
 
 bookingRoute.get('/booking/my',isAuthenticated, getMyBooking)
 
 bookingRoute.patch('/booking/:id',updateBooking)
 
-bookingRoute.get('/booking/count',countBooking)
 
 
 
