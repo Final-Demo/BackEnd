@@ -2,8 +2,9 @@ import { favoriteModel } from "../model/favoriteModel.js";
 
 export const addFavorite = async (req, res, next) => {
     try {
-        const { apartmentId } = req.body;
-        const user = req.user._id
+        const  apartmentId  = req.params.id;
+        const user = req.auth.id
+        console.log(apartmentId,user)
         const favorite = await favoriteModel.findOne({ user, apartment: apartmentId })
         if (favorite) {
             return res.status(400).json({ message: 'Apartment already favorited' })
@@ -18,7 +19,7 @@ export const addFavorite = async (req, res, next) => {
 
 export const getFavorites = async (req, res, next) => {
     try {
-        const favorites = await favoriteModel.find({ user: req.auth._id }).populate('apartment')
+        const favorites = await favoriteModel.find({ user: req.auth.id }).populate('apartment')
         res.status(200).json({ message: 'Favorites found successfully', favorites })
     } catch (error) {
         next(error)

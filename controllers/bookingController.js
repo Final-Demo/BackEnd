@@ -1,6 +1,7 @@
 import { apartmentModel } from "../model/apartmentModel.js";
 import { bookingModel } from "../model/bookingModel.js"
 import { notificationModel } from "../model/notificationModel.js";
+import { userModel } from "../model/userModel.js";
 import { bookingSchemavalidator } from "../validator/booking-validator.js";
 export const createBooking = async (req, res, next) => {
     try {

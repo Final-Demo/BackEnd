@@ -12,7 +12,7 @@ const notificationSchema = new Schema({
         required:true,
         enum:['apartment','booking'] 
     },
-    Message:{
+    message:{
         type:String,
         required:true
     },

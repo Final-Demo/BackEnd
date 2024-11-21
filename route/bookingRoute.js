@@ -12,7 +12,7 @@ bookingRoute.get('/booking',getBookings)
 
 bookingRoute.get('/booking/my',isAuthenticated, getMyBooking)
 
-bookingRoute.patch('/booking/:id',updateBooking)
+bookingRoute.patch('/booking/:id',isAuthenticated,updateBooking)
 
 
 
