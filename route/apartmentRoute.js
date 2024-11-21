@@ -16,13 +16,13 @@ apartmentRoute.get('/apartments/:id', getApartmentById);
 apartmentRoute.post('/apartments',isAuthenticated,upload.array('images',3),addApartment);
 
 // Update a property
-apartmentRoute.patch('/apartments/:id',upload.array('images',3), updateApartment);
+apartmentRoute.patch('/apartments/:id',isAuthenticated,upload.array('images',3), updateApartment);
 
 // get only ma apartment created by the user
 apartmentRoute.get('/apartments/my',isAuthenticated, getMyApartment)
 
 // Approve property (Admin functionality)
-apartmentRoute.patch('/apartments/:id', approveProperty);
+apartmentRoute.patch('/apartments/:id',isAuthenticated, approveProperty);
 
 // Delete a property
 apartmentRoute.delete('/apartments/:id', deleteApartment);

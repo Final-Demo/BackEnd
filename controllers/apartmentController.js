@@ -103,7 +103,7 @@ export const updateApartment = async (req, res, next) => {
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
-        const { id } = req.params
+        const  id = req.params.id
         const apartment = await apartmentModel.findByIdAndUpdate(id,{ user: req.auth.id }, value, { new: true })
         // check whather the apartment is there to be updated
         if (!apartment) {
