@@ -6,6 +6,9 @@ import { isAuthenticated } from "../middlewares/auth.js";
 
 const apartmentRoute = Router();
 
+// get total number of properties
+apartmentRoute.get('/apartments/total',countApartment)
+
 // Get all properties
 apartmentRoute.get('/apartments', getApartment);
 
@@ -27,8 +30,6 @@ apartmentRoute.patch('/apartments/:id',isAuthenticated, approveProperty);
 // Delete a property
 apartmentRoute.delete('/apartments/:id', deleteApartment);
 
-// get total number of properties
-apartmentRoute.get('/apartments/total',countApartment)
 
 
 export default apartmentRoute

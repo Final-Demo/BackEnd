@@ -117,8 +117,8 @@ export const updateApartment = async (req, res, next) => {
 
 export const deleteApartment = async (req, res, next) => {
     try {
-        // input validation with joi
-        const { id } = req.params
+        // input validation with joi.
+        const id  = req.params.id
         const property = await apartmentModel.findByIdAndDelete(id, { user: req.auth.id })
         // check if the id is valid to be deleted
         if (!property) {
@@ -130,6 +130,7 @@ export const deleteApartment = async (req, res, next) => {
         res.status(500).json({ error: error.message })
     }
 }
+
 
 
 
